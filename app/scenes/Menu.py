@@ -1,6 +1,8 @@
 import pygame
 from pygame import mixer
 from layout.Button import *
+from scenes.PlayerVersusAI import PlayerVersusAI
+from scenes.PlayerVersusPlayer import PlayerVersusPlayer
 
 clicked = False
 pygame.init()
@@ -38,12 +40,12 @@ def StartMenu():
         przycisk_koniec = Button(140, 642, 'Zakończ', screen, czcionka)
 
         if przycisk_polaczenie.drawButton():
-            # TODO: Plansza AI
-            pass
+            pygame.quit()
+            PlayerVersusAI(False)
 
         if przycisk_start.drawButton():
             pygame.quit()
-            Game(config_music)
+            PlayerVersusPlayer(False)
 
         if przycisk_muzyka.drawButton():
             if config_music:
