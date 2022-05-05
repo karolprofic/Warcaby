@@ -5,20 +5,20 @@ from checkers.Controller import *
 class PlayerVersusPlayer(Game):
     def __init__(self, music):
         super().__init__(music)
+        self.start()
 
     def start(self):
-        run = True
         zegar = pygame.time.Clock()
         gra = Warcaby(self.WIN)
         pygame.init()
 
-        while run:
-            self.WIN.fill(WHITE_COLOR)
+        while self.isRunning:
+            self.WIN.fill(DEFAULT_BACKGROUND)
             zegar.tick(60)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    run = False
+                    self.isRunning = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()

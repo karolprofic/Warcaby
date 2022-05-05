@@ -7,7 +7,7 @@ from scenes.PlayerVersusPlayer import PlayerVersusPlayer
 clicked = False
 pygame.init()
 screen = pygame.display.set_mode((1220, 800))
-pygame.display.set_caption('Warcaby Menu')
+pygame.display.set_caption('Warcaby menu')
 czcionka = pygame.font.SysFont('Calibri', 30)
 zegar = pygame.time.Clock()
 
@@ -19,21 +19,21 @@ def RysujTlo(src):
     rect.height = 800
     rect.width = 1220
     screen.blit(img, rect)
-    pygame.draw.rect(screen, BLACK_COLOR, rect, 1)
+    pygame.draw.rect(screen, PLAYER_BLACK, rect, 1)
 
 def StartMenu():
     global clicked
     global config_music
 
     mixer.init()
-    mixer.music.load('./assets/Muzyka/track1.mp3')
+    mixer.music.load('./assets/music/track1.mp3')
 
     przycisk_muzyka_komunikat = 'Włącz muzykę'
 
     run = True
     while run:
 
-        RysujTlo("./assets/Menu/menu_mg_1.jpg")
+        RysujTlo("./assets/menu/menu_mg_1.jpg")
         przycisk_polaczenie = Button(140, 256, 'Graj przeciwko AI', screen, czcionka)
         przycisk_start = Button(140, 385, 'Gra swobodna', screen, czcionka)
         przycisk_muzyka = Button(140, 515, przycisk_muzyka_komunikat, screen, czcionka)

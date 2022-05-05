@@ -1,8 +1,6 @@
 import pygame
 from checkers.Board import *
-
-BIALY = (255, 255, 255)
-CZARNY = (0, 0, 0)
+from commons.constants import *
 
 class Warcaby:
     def __init__(self, win):
@@ -16,8 +14,8 @@ class Warcaby:
 
     def _init(self):
         self.aktywny_pionek = None
-        self.board = Plansza()
-        self.czyja_kolej = BLACK_COLOR
+        self.board = Board()
+        self.czyja_kolej = PLAYER_BLACK
         self.mozliwe_ruchy = {}
 
     def kto_wygral(self):
@@ -56,7 +54,7 @@ class Warcaby:
     def rysuj_podpowiedzi(self, mozliwe_ruchy):
         for ruch in mozliwe_ruchy:
             row, col = ruch
-            img = pygame.image.load("./assets/Pionki/move.png")
+            img = pygame.image.load(ASSETS_PIECE_MOVE)
             img.convert()
             el = img.get_rect()#
             el.height = 100#
@@ -68,7 +66,7 @@ class Warcaby:
 
     def zmien_gracza(self):
         self.mozliwe_ruchy = {}
-        if self.czyja_kolej == BLACK_COLOR:
-            self.czyja_kolej = WHITE_COLOR
+        if self.czyja_kolej == PLAYER_BLACK:
+            self.czyja_kolej = PLAYER_WHITE
         else:
-            self.czyja_kolej = BLACK_COLOR
+            self.czyja_kolej = PLAYER_BLACK

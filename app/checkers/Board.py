@@ -1,10 +1,8 @@
 import pygame
 from checkers.Piece import *
+from commons.constants import *
 
-WHITE_COLOR = (255, 255, 255)
-BLACK_COLOR = (0, 0, 0)
-
-class Plansza:
+class Board:
     def __init__(self):
         self.boardArray = []
         self.numberOfRemainingBlack = 12
@@ -17,7 +15,7 @@ class Plansza:
         for row in range(8):
             # TODO: Duplikacja kodu
             for column in range(8):
-                img = pygame.image.load("./assets/Plansza/white_wood.jpg")
+                img = pygame.image.load(ASSETS_BOARD_WHITE)
                 img.convert()
                 el = img.get_rect()
                 el.height = 100
@@ -29,7 +27,7 @@ class Plansza:
 
         for row in range(8):
             for column in range(row % 2, 8, 2):
-                img = pygame.image.load("./assets/Plansza/black_wood.jpg")
+                img = pygame.image.load(ASSETS_BOARD_BLACK)
                 img.convert()
                 el = img.get_rect()
                 el.height = 100
@@ -45,7 +43,7 @@ class Plansza:
 
         if row == 8 - 1 or row == 0:
             piece.makeKing()
-            if piece.color == WHITE_COLOR:
+            if piece.color == PLAYER_WHITE:
                 self.numberOfWhiteKing += 1
             else:
                 self.numberOfBlackKing += 1
@@ -56,9 +54,9 @@ class Plansza:
             for column in range(8):
                 if column % 2 == ((row +  1) % 2):
                     if row < 3:
-                        self.boardArray[row].append(Piece(row, column, WHITE_COLOR))
+                        self.boardArray[row].append(Piece(row, column, PLAYER_WHITE))
                     elif row > 4:
-                        self.boardArray[row].append(Piece(row, column, BLACK_COLOR))
+                        self.boardArray[row].append(Piece(row, column, PLAYER_BLACK))
                     else:
                         self.boardArray[row].append(0)
                 else:
@@ -84,16 +82,16 @@ class Plansza:
         for pionek in pionki:
             self.boardArray[pionek.row][pionek.column] = 0
             if pionek != 0:
-                if pionek.color == BLACK_COLOR:
+                if pionek.color == PLAYER_BLACK:
                     self.numberOfRemainingBlack -= 1
                 else:
                     self.numberOfRemainingWhite -= 1
 
     def kto_wygral(self):
         if self.numberOfRemainingBlack <= 0:
-            return WHITE_COLOR
+            return PLAYER_WHITE
         elif self.numberOfRemainingWhite <= 0:
-            return BLACK_COLOR
+            return PLAYER_BLACK
         return None
 
     def findPossibleMoves(self, pionek):
@@ -102,10 +100,10 @@ class Plansza:
         right = pionek.column + 1
         rowNumber = pionek.row
 
-        if pionek.color == BLACK_COLOR or pionek.isKing:
+        if pionek.color == PLAYER_BLACK or pionek.isKing:
             possibleMoves.update(self.lewa_diagonala(rowNumber - 1, max(rowNumber - 3, -1), -1, pionek.color, left))
             possibleMoves.update(self.prawa_diagonala(rowNumber - 1, max(rowNumber - 3, -1), -1, pionek.color, right))
-        if pionek.color == WHITE_COLOR or pionek.isKing:
+        if pionek.color == PLAYER_WHITE or pionek.isKing:
             possibleMoves.update(self.lewa_diagonala(rowNumber + 1, max(rowNumber + 3, 8), 1, pionek.color, left))
             possibleMoves.update(self.prawa_diagonala(rowNumber + 1, max(rowNumber + 3, 8), 1, pionek.color, right))
 

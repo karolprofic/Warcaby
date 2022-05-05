@@ -1,8 +1,5 @@
 import pygame
-
-WHITE_COLOR = (255, 255, 255)
-BLACK_COLOR = (0, 0, 0)
-
+from commons.constants import *
 
 class Piece:
 
@@ -23,16 +20,16 @@ class Piece:
         self.isKing = True
 
     def draw(self, win):
-        if self.color == WHITE_COLOR:
+        if self.color == PLAYER_WHITE:
             if self.isKing:
-                img = pygame.image.load("./assets/Pionki/whiteQueen.png")
+                img = pygame.image.load(ASSETS_PIECE_WHITE_KING)
             else:
-                img = pygame.image.load("./assets/Pionki/white.png")
+                img = pygame.image.load(ASSETS_PIECE_WHITE)
         else:
             if self.isKing:
-                img = pygame.image.load("./assets/Pionki/blackQueen.png")
+                img = pygame.image.load(ASSETS_PIECE_BLACK_KING)
             else:
-                img = pygame.image.load("./assets/Pionki/black.png")
+                img = pygame.image.load(ASSETS_PIECE_BLACK)
         img.convert()
         el = img.get_rect()
         el.height = 100
