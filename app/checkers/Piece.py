@@ -1,5 +1,5 @@
-import pygame
 from commons.constants import *
+from commons.functions import *
 
 class Piece:
 
@@ -22,25 +22,17 @@ class Piece:
     def draw(self, win):
         if self.color == PLAYER_WHITE:
             if self.isKing:
-                img = pygame.image.load(ASSETS_PIECE_WHITE_KING)
+                drawImage(win, ASSETS_PIECE_WHITE_KING, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
             else:
-                img = pygame.image.load(ASSETS_PIECE_WHITE)
+                drawImage(win, ASSETS_PIECE_WHITE, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
         else:
             if self.isKing:
-                img = pygame.image.load(ASSETS_PIECE_BLACK_KING)
+                drawImage(win, ASSETS_PIECE_BLACK_KING, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
             else:
-                img = pygame.image.load(ASSETS_PIECE_BLACK)
-        img.convert()
-        el = img.get_rect()
-        el.height = 100
-        el.width = 100
-        el.left = self.x - 50
-        el.top = self.y - 50
-        win.blit(img, el)
-        pygame.draw.rect(win, (90, 53, 9), el, 1)
+                drawImage(win, ASSETS_PIECE_BLACK, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
 
-    def move(self, rzad, col):
-        self.row = rzad
+    def move(self, row, col):
+        self.row = row
         self.column = col
         self.calculateCoordinates()
 

@@ -1,3 +1,3 @@
-from scenes.Menu import StartMenu
+from scenes.Menu import *
 
-StartMenu()
+Menu()

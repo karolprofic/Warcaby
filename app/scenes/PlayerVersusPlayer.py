@@ -5,30 +5,31 @@ from checkers.Controller import *
 class PlayerVersusPlayer(Game):
     def __init__(self, music):
         super().__init__(music)
+        self.gameController = Controller(self.gameWindow)
+        self.clock = pygame.time.Clock()
         self.start()
 
     def start(self):
-        zegar = pygame.time.Clock()
-        gra = Warcaby(self.WIN)
         pygame.init()
 
         while self.isRunning:
-            self.WIN.fill(DEFAULT_BACKGROUND)
-            zegar.tick(60)
+            self.gameWindow.fill(DEFAULT_BACKGROUND)
+            self.clock.tick(60)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.isRunning = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-
-                    row, col = self.oblicz_rzad_i_kolumne(pos, gra)
-
+                    row, col = self.mouseClickEvent(pygame.mouse.get_pos(), self.gameController)
                     if row != -1 and col != -1:
-                        gra.wybierz_pionka(row, col)
+                        self.gameController.selectPiece(row, col)
 
-            self.drawMenu(gra.board.numberOfRemainingBlack, gra.board.numberOfRemainingWhite, gra.board.numberOfBlackKing, gra.board.numberOfWhiteKing, gra.czyja_kolej)
-            gra.update()
+            self.drawMenu(self.gameController.board.numberOfRemainingBlack,
+                          self.gameController.board.numberOfRemainingWhite,
+                          self.gameController.board.numberOfBlackKing,
+                          self.gameController.board.numberOfWhiteKing,
+                          self.gameController.whoseTurn)
+            self.gameController.update()
 
         pygame.quit()
