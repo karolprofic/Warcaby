@@ -45,13 +45,13 @@ class Game:
         drawImage(self.gameWindow, ASSETS_MENU_RESET, 66, 350, 840, 600)
         drawImage(self.gameWindow, ASSETS_MENU_EXIT, 66, 350, 840, 700)
 
-    def mouseClickEvent(self, mousePosition, gameControler):
+    def mouseClickEvent(self, mousePosition, gameController):
         x, y = mousePosition
-        if x > 100*8 or y > 100*8:
+        if x > 800 or y > 800:
             # Reset
             if 840 < x < 1190 and 600 < y < 670:
-                gameControler.reset()
-                gameControler.whoseTurn = PLAYER_BLACK
+                gameController.reset()
+                gameController.whoseTurn = PLAYER_BLACK
             # Exit
             if 840 < x < 1190 and 700 < y < 760:
                 self.isRunning = False

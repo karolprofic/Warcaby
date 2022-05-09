@@ -66,10 +66,21 @@ class Board:
     def removePiece(self, pieces):
         for piece in pieces:
             self.boardArray[piece.row][piece.column] = 0
-            if piece != 0:
+
+            if piece == 0:
+                continue
+
+            if piece.isKing:
+                if piece.color == PLAYER_BLACK:
+                    self.numberOfBlackKing -= 1
+                    self.numberOfRemainingBlack -= 1
+                if piece.color == PLAYER_WHITE:
+                    self.numberOfWhiteKing -= 1
+                    self.numberOfRemainingWhite -= 1
+            else:
                 if piece.color == PLAYER_BLACK:
                     self.numberOfRemainingBlack -= 1
-                else:
+                if piece.color == PLAYER_WHITE:
                     self.numberOfRemainingWhite -= 1
 
     def returnWinnerIfExists(self):
@@ -169,3 +180,23 @@ class Board:
 
             right += 1
         return moves
+
+
+
+
+
+
+
+
+    # TODO: refaktor
+    def get_piece(self, row, col):
+        return self.boardArray[row][col]
+
+    def get_all_pieces(self, color):
+        pieces = []
+        for row in self.boardArray:
+            for piece in row:
+                if piece != 0 and piece.color == color:
+                    pieces.append(piece)
+        return pieces
+

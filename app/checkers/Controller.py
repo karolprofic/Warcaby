@@ -58,3 +58,18 @@ class Controller:
             self.whoseTurn = PLAYER_WHITE
         else:
             self.whoseTurn = PLAYER_BLACK
+
+
+
+
+
+
+
+
+    # TODO: refaktor
+    def get_board(self):
+        return self.board
+
+    def ai_move(self, board):
+        self.board = board
+        self.changePlayer()
