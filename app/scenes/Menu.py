@@ -10,9 +10,9 @@ class Menu:
     def __init__(self):
         self.isRunning = True
         pygame.init()
-        pygame.display.set_caption('Warcaby menu')
+        pygame.display.set_caption(MENU_TITLE)
         self.gameWindow = pygame.display.set_mode((1220, 800))
-        self.font = pygame.font.SysFont('Calibri', 30)
+        self.font = pygame.font.SysFont(FONT_NAME, 30)
         self.music = False
         self.start()
 

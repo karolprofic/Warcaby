@@ -22,15 +22,15 @@ class Piece:
 
     def draw(self, win):
         if self.color == PLAYER_WHITE:
-            if self.isKing:
-                drawImage(win, ASSETS_PIECE_WHITE_KING, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
-            else:
-                drawImage(win, ASSETS_PIECE_WHITE, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
+            self.drawPiece(win, ASSETS_PIECE_WHITE, ASSETS_PIECE_WHITE_KING)
         else:
-            if self.isKing:
-                drawImage(win, ASSETS_PIECE_BLACK_KING, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
-            else:
-                drawImage(win, ASSETS_PIECE_BLACK, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
+            self.drawPiece(win, ASSETS_PIECE_BLACK, ASSETS_PIECE_BLACK_KING)
+
+    def drawPiece(self, win, pieceIcon, kingIcon):
+        if self.isKing:
+            drawImage(win, kingIcon, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
+        else:
+            drawImage(win, pieceIcon, 100, 100, self.x - 50, self.y - 50, (90, 53, 9))
 
     def move(self, row, col):
         self.row = row

@@ -4,6 +4,7 @@ from scenes.Game import *
 
 clicked = False
 
+
 class Button:
 
     def __init__(self, x, y, text, screen, font):

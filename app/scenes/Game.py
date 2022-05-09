@@ -3,6 +3,7 @@ from layout.Button import *
 from commons.constants import *
 from commons.functions import *
 
+
 class Game:
 
     def __init__(self, music):

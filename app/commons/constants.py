@@ -5,6 +5,7 @@ PLAYER_BLACK = (0, 0, 0)
 # Others
 DEFAULT_BACKGROUND = (255, 255, 255)
 GAME_TITLE = "Warcaby"
+MENU_TITLE = "Warcaby menu"
 FONT_NAME = "Calibri"
 
 # Assets

@@ -3,6 +3,7 @@ from checkers.Controller import *
 from commons.constants import *
 from checkers.AI import *
 
+
 class PlayerVersusAI(Game):
     def __init__(self, music):
         super().__init__(music)
@@ -61,4 +62,3 @@ class PlayerVersusAI(Game):
         else:
             self.gameWindow.blit(font.render(TEXT_HARD, True, (50, 50, 50)), (820, 450))
             drawImage(self.gameWindow, ASSETS_DIFFICULTY_HARD, 66, 350, 840, 500)
-
