@@ -1,6 +1,7 @@
 from commons.constants import *
 from commons.functions import *
 
+
 class Piece:
 
     def __init__(self, row, column, color):

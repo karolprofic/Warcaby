@@ -1,9 +1,7 @@
-from copy import deepcopy
-
 from scenes.Game import Game
 from checkers.Controller import *
 from commons.constants import *
-
+from checkers.AI import *
 
 class PlayerVersusAI(Game):
     def __init__(self, music):
@@ -22,9 +20,9 @@ class PlayerVersusAI(Game):
 
             # AI move
             if self.gameController.whoseTurn == PLAYER_WHITE:
-                value, new_board = AI(self.gameController.get_board(), self.difficulty, PLAYER_WHITE).value
-                print("ZMIANA : " + str(value))
-                self.gameController.ai_move(new_board)
+                moveValue, newBoard = AI(self.gameController.getBoard(), self.difficulty, PLAYER_WHITE).valueAndBoard
+                self.gameController.setBoard(newBoard)
+                self.gameController.changePlayer()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -64,61 +62,3 @@ class PlayerVersusAI(Game):
             self.gameWindow.blit(font.render(TEXT_HARD, True, (50, 50, 50)), (820, 450))
             drawImage(self.gameWindow, ASSETS_DIFFICULTY_HARD, 66, 350, 840, 500)
 
-
-# TODO: refaktor
-class AI:
-    def __init__(self, board, depth, playerColor):
-        self.value = self.minimax(board, depth, playerColor)
-
-    def minimax(self, board, depth, playerColor):
-        if depth == 0 or board.returnWinnerIfExists() is not None:
-            return self.rateMove(board), board
-
-        if playerColor == PLAYER_WHITE:
-            return self.findWhiteMoves(board, depth)
-
-        if playerColor == PLAYER_BLACK:
-            return self.findBlackMoves(board, depth)
-
-    @staticmethod
-    def rateMove(board):
-        return board.numberOfRemainingWhite - board.numberOfRemainingBlack + (board.numberOfWhiteKing * 0.5 - board.numberOfBlackKing * 0.5)
-
-    def findWhiteMoves(self, board, depth):
-        maxEval = float('-inf')
-        best_move = None
-        for move in self.get_all_moves(board, PLAYER_WHITE):
-            evaluation = AI(move, depth - 1, PLAYER_BLACK).value[0]
-            maxEval = max(maxEval, evaluation)
-            if maxEval == evaluation:
-                best_move = move
-
-        return maxEval, best_move
-
-    def findBlackMoves(self, board, depth):
-        minEval = float('inf')
-        best_move = None
-        for move in self.get_all_moves(board, PLAYER_BLACK):
-            evaluation = AI(move, depth - 1, PLAYER_WHITE).value[0]
-            minEval = min(minEval, evaluation)
-            if minEval == evaluation:
-                best_move = move
-
-        return minEval, best_move
-
-    def get_all_moves(self, board, color):
-        moves = []
-
-        for piece in board.get_all_pieces(color):
-            valid_moves = board.findPossibleMoves(piece)
-            for move, skip in valid_moves.items():
-                temp_board = deepcopy(board)
-                temp_piece = temp_board.get_piece(piece.row, piece.column)
-
-                temp_board.movePiece(temp_piece, move[0], move[1])
-                if skip:
-                    temp_board.removePiece(skip)
-
-                moves.append(temp_board)
-
-        return moves

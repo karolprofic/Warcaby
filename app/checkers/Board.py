@@ -2,6 +2,7 @@ from checkers.Piece import *
 from commons.constants import *
 from commons.functions import *
 
+
 class Board:
     def __init__(self):
         self.boardArray = []
@@ -15,7 +16,7 @@ class Board:
         for row in range(8):
             self.boardArray.append([])
             for column in range(8):
-                if column % 2 == ((row +  1) % 2):
+                if column % 2 == ((row + 1) % 2):
                     if row < 3:
                         self.boardArray[row].append(Piece(row, column, PLAYER_WHITE))
                     elif row > 4:
@@ -97,106 +98,59 @@ class Board:
         rowNumber = piece.row
 
         if piece.color == PLAYER_BLACK or piece.isKing:
-            possibleMoves.update(self.findPossibleMovesOnLeftDiagonal(rowNumber - 1, max(rowNumber - 3, -1), -1, piece.color, left))
-            possibleMoves.update(self.findPossibleMovesOnRightDiagonal(rowNumber - 1, max(rowNumber - 3, -1), -1, piece.color, right))
+            possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber - 1, max(rowNumber - 3, -1), -1, piece.color, left, True))
+            possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber - 1, max(rowNumber - 3, -1), -1, piece.color, right, False))
         if piece.color == PLAYER_WHITE or piece.isKing:
-            possibleMoves.update(self.findPossibleMovesOnLeftDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, left))
-            possibleMoves.update(self.findPossibleMovesOnRightDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, right))
+            possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, left, True))
+            possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, right, False))
 
         return possibleMoves
 
-    def findPossibleMovesOnLeftDiagonal(self, start, stop, step, color, left, skipped=None):
+    def findPossibleMovesOnDiagonal(self, start, stop, step, color, direction, traverseLeft, skipped=None):
         if skipped is None:
             skipped = []
 
         moves = {}
         last = []
         for r in range(start, stop, step):
-            if left < 0:
-                break
+            if traverseLeft:
+                if direction < 0:
+                    break
+            if not traverseLeft:
+                if direction >= 8:
+                    break
 
-            if r > 7 or left > 7:
+            if r > 7 or direction > 7:
                 continue
 
-            current = self.boardArray[r][left]
+            current = self.boardArray[r][direction]
             if current == 0:
                 if skipped and not last:
                     break
                 elif skipped:
-                    moves[(r,left)] = last + skipped
+                    moves[(r, direction)] = last + skipped
                 else:
-                    moves[(r, left)] = last
+                    moves[(r, direction)] = last
 
                 if last:
                     if step == -1:
                         row = max(r-3, 0)
                     else:
                         row = min(r+3, 8)
-                    moves.update(self.findPossibleMovesOnLeftDiagonal(r + step, row, step, color, left - 1, skipped=last))
-                    moves.update(self.findPossibleMovesOnRightDiagonal(r + step, row, step, color, left + 1, skipped=last))
+                    moves.update(self.findPossibleMovesOnDiagonal(r + step, row, step, color, direction - 1, True, skipped=last))
+                    moves.update(self.findPossibleMovesOnDiagonal(r + step, row, step, color, direction + 1, False, skipped=last))
                 break
             elif current.color == color:
                 break
             else:
                 last = [current]
 
-            left -= 1
+            if traverseLeft:
+                direction -= 1
+            if not traverseLeft:
+                direction += 1
+
         return moves
 
-    def findPossibleMovesOnRightDiagonal(self, start, stop, step, color, right, skipped=None):
-        if skipped is None:
-            skipped = []
-
-        moves = {}
-        last = []
-        for r in range(start, stop, step):
-            if right >= 8:
-                break
-
-            if r > 7 or right > 7:
-                continue
-
-            current = self.boardArray[r][right]
-            if current == 0:
-                if skipped and not last:
-                    break
-                elif skipped:
-                    moves[(r, right)] = last + skipped
-                else:
-                    moves[(r, right)] = last
-
-                if last:
-                    if step == -1:
-                        row = max(r - 3, 0)
-                    else:
-                        row = min(r + 3, 8)
-                    moves.update(self.findPossibleMovesOnLeftDiagonal(r + step, row, step, color, right - 1, skipped=last))
-                    moves.update(self.findPossibleMovesOnRightDiagonal(r + step, row, step, color, right + 1, skipped=last))
-                break
-            elif current.color == color:
-                break
-            else:
-                last = [current]
-
-            right += 1
-        return moves
-
-
-
-
-
-
-
-
-    # TODO: refaktor
-    def get_piece(self, row, col):
+    def getPiece(self, row, col):
         return self.boardArray[row][col]
-
-    def get_all_pieces(self, color):
-        pieces = []
-        for row in self.boardArray:
-            for piece in row:
-                if piece != 0 and piece.color == color:
-                    pieces.append(piece)
-        return pieces
-

@@ -1,6 +1,7 @@
 from checkers.Board import *
 from commons.constants import *
 
+
 class Controller:
     def __init__(self, gameWindow):
         self.gameWindow = gameWindow
@@ -19,6 +20,12 @@ class Controller:
 
     def returnWinnerIfExists(self):
         return self.board.returnWinnerIfExists()
+
+    def getBoard(self):
+        return self.board
+
+    def setBoard(self, newBoard):
+        self.board = newBoard
 
     def selectPiece(self, row, column):
         if self.selectedPiece:
@@ -58,18 +65,3 @@ class Controller:
             self.whoseTurn = PLAYER_WHITE
         else:
             self.whoseTurn = PLAYER_BLACK
-
-
-
-
-
-
-
-
-    # TODO: refaktor
-    def get_board(self):
-        return self.board
-
-    def ai_move(self, board):
-        self.board = board
-        self.changePlayer()

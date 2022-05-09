@@ -4,6 +4,7 @@ from layout.Button import *
 from scenes.PlayerVersusAI import PlayerVersusAI
 from scenes.PlayerVersusPlayer import PlayerVersusPlayer
 
+
 class Menu:
 
     def __init__(self):
