@@ -4,6 +4,7 @@ from scenes.Game import Game
 from checkers.Controller import *
 from commons.constants import *
 
+
 class PlayerVersusAI(Game):
     def __init__(self, music):
         super().__init__(music)
@@ -21,12 +22,9 @@ class PlayerVersusAI(Game):
 
             # AI move
             if self.gameController.whoseTurn == PLAYER_WHITE:
-                value, new_board = minimax(self.gameController.get_board(), self.difficulty, PLAYER_WHITE)
-                print("ZMIANA : " + str(value) )
+                value, new_board = AI(self.gameController.get_board(), self.difficulty, PLAYER_WHITE).value
+                print("ZMIANA : " + str(value))
                 self.gameController.ai_move(new_board)
-
-
-
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -67,56 +65,60 @@ class PlayerVersusAI(Game):
             drawImage(self.gameWindow, ASSETS_DIFFICULTY_HARD, 66, 350, 840, 500)
 
 
-
-
-
 # TODO: refaktor
-def minimax(board, depth, playerColor):
-    if depth == 0 or board.returnWinnerIfExists() is not None:
-        moveValue = board.numberOfRemainingWhite - board.numberOfRemainingBlack + (board.numberOfWhiteKing * 0.5 - board.numberOfBlackKing * 0.5)
-        return moveValue, board
+class AI:
+    def __init__(self, board, depth, playerColor):
+        self.value = self.minimax(board, depth, playerColor)
 
-    if playerColor == PLAYER_WHITE:
+    def minimax(self, board, depth, playerColor):
+        if depth == 0 or board.returnWinnerIfExists() is not None:
+            return self.rateMove(board), board
+
+        if playerColor == PLAYER_WHITE:
+            return self.findWhiteMoves(board, depth)
+
+        if playerColor == PLAYER_BLACK:
+            return self.findBlackMoves(board, depth)
+
+    @staticmethod
+    def rateMove(board):
+        return board.numberOfRemainingWhite - board.numberOfRemainingBlack + (board.numberOfWhiteKing * 0.5 - board.numberOfBlackKing * 0.5)
+
+    def findWhiteMoves(self, board, depth):
         maxEval = float('-inf')
         best_move = None
-        for move in get_all_moves(board, PLAYER_WHITE):
-            evaluation = minimax(move, depth - 1, PLAYER_BLACK)[0]
+        for move in self.get_all_moves(board, PLAYER_WHITE):
+            evaluation = AI(move, depth - 1, PLAYER_BLACK).value[0]
             maxEval = max(maxEval, evaluation)
             if maxEval == evaluation:
                 best_move = move
 
         return maxEval, best_move
 
-    if playerColor == PLAYER_BLACK:
+    def findBlackMoves(self, board, depth):
         minEval = float('inf')
         best_move = None
-        for move in get_all_moves(board, PLAYER_BLACK):
-            evaluation = minimax(move, depth - 1, PLAYER_WHITE)[0]
+        for move in self.get_all_moves(board, PLAYER_BLACK):
+            evaluation = AI(move, depth - 1, PLAYER_WHITE).value[0]
             minEval = min(minEval, evaluation)
             if minEval == evaluation:
                 best_move = move
 
         return minEval, best_move
 
+    def get_all_moves(self, board, color):
+        moves = []
 
-def simulate_move(piece, move, board, skip):
-    board.movePiece(piece, move[0], move[1])
-    if skip:
-        board.removePiece(skip)
+        for piece in board.get_all_pieces(color):
+            valid_moves = board.findPossibleMoves(piece)
+            for move, skip in valid_moves.items():
+                temp_board = deepcopy(board)
+                temp_piece = temp_board.get_piece(piece.row, piece.column)
 
-    return board
+                temp_board.movePiece(temp_piece, move[0], move[1])
+                if skip:
+                    temp_board.removePiece(skip)
 
+                moves.append(temp_board)
 
-def get_all_moves(board, color):
-    moves = []
-
-    for piece in board.get_all_pieces(color):
-        valid_moves = board.findPossibleMoves(piece)
-        for move, skip in valid_moves.items():
-            temp_board = deepcopy(board)
-            temp_piece = temp_board.get_piece(piece.row, piece.column)
-            new_board = simulate_move(temp_piece, move, temp_board, skip)
-            moves.append(new_board)
-
-    return moves
-
+        return moves
