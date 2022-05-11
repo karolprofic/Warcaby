@@ -91,7 +91,7 @@ class Board:
             return PLAYER_BLACK
         return None
 
-    def findPossibleMoves(self, piece):
+    def findPossibleMoves(self, startX, startY, piece):
         possibleMoves = {}
         left = piece.column - 1
         right = piece.column + 1
@@ -104,6 +104,17 @@ class Board:
             possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, left, True))
             possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, right, False))
 
+        for move in list(possibleMoves):
+            if (move[0] == startX + 3 or move[0] == startX - 3) and (move[1] == startY + 3 or move[1] == startY - 3):
+                del possibleMoves[move]
+            if (move[0] == startX + 4 or move[0] == startX - 4) and (move[1] == startY + 4 or move[1] == startY - 4):
+                del possibleMoves[move]
+            if (move[0] == startX + 5 or move[0] == startX - 5) and (move[1] == startY + 5 or move[1] == startY - 5):
+                del possibleMoves[move]
+            if (move[0] == startX + 6 or move[0] == startX - 6) and (move[1] == startY + 6 or move[1] == startY - 6):
+                del possibleMoves[move]
+            if (move[0] == startX + 7 or move[0] == startX - 7) and (move[1] == startY + 7 or move[1] == startY - 7):
+                del possibleMoves[move]
         return possibleMoves
 
     def findPossibleMovesOnDiagonal(self, start, stop, step, color, direction, traverseLeft, skipped=None):

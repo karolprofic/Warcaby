@@ -47,7 +47,7 @@ class AI:
     def getAllMoves(self, board, color):
         moves = []
         for piece in self.findAllPiecesOfColor(board, color):
-            possibleMoves = board.findPossibleMoves(piece)
+            possibleMoves = board.findPossibleMoves(piece.row, piece.column, piece)
             for move, skip in possibleMoves.items():
                 newBoard = deepcopy(board)
                 chosenPiece = newBoard.getPiece(piece.row, piece.column)

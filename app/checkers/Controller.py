@@ -36,7 +36,7 @@ class Controller:
         piece = self.board.boardArray[row][column]
         if piece != 0 and piece.color == self.whoseTurn:
             self.selectedPiece = piece
-            self.possibleMoves = self.board.findPossibleMoves(piece)
+            self.possibleMoves = self.board.findPossibleMoves(row, column, piece)
             return True
 
         return False
