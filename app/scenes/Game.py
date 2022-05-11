@@ -52,7 +52,7 @@ class Game:
             # Reset
             if 840 < x < 1190 and 600 < y < 670:
                 gameController.reset()
-                gameController.whoseTurn = PLAYER_BLACK
+                gameController.whoseTurn = PLAYER_WHITE
             # Exit
             if 840 < x < 1190 and 700 < y < 760:
                 self.isRunning = False

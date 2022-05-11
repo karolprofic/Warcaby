@@ -11,6 +11,7 @@ class Board:
         self.numberOfBlackKing = 0
         self.numberOfWhiteKing = 0
         self.createArrayBoard()
+        self.recursionFix = False
 
     def createArrayBoard(self):
         for row in range(8):
@@ -104,18 +105,88 @@ class Board:
             possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, left, True))
             possibleMoves.update(self.findPossibleMovesOnDiagonal(rowNumber + 1, max(rowNumber + 3, 8), 1, piece.color, right, False))
 
-        for move in list(possibleMoves):
-            if (move[0] == startX + 3 or move[0] == startX - 3) and (move[1] == startY + 3 or move[1] == startY - 3):
-                del possibleMoves[move]
-            if (move[0] == startX + 4 or move[0] == startX - 4) and (move[1] == startY + 4 or move[1] == startY - 4):
-                del possibleMoves[move]
-            if (move[0] == startX + 5 or move[0] == startX - 5) and (move[1] == startY + 5 or move[1] == startY - 5):
-                del possibleMoves[move]
-            if (move[0] == startX + 6 or move[0] == startX - 6) and (move[1] == startY + 6 or move[1] == startY - 6):
-                del possibleMoves[move]
-            if (move[0] == startX + 7 or move[0] == startX - 7) and (move[1] == startY + 7 or move[1] == startY - 7):
-                del possibleMoves[move]
+        # remove not allowed moves
+        if self.recursionFix:
+            for move in list(possibleMoves):
+                if (move[0] == startX + 3 or move[0] == startX - 3) and (move[1] == startY + 3 or move[1] == startY - 3):
+                    if self.isValidIndex(startX+2, startY+2):
+                        if self.boardArray[startX+1][startY+1] != 0 and self.boardArray[startX+2][startY+2] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-2, startY-2):
+                        if self.boardArray[startX-1][startY-1] != 0 and self.boardArray[startX-2][startY-2] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-2, startY+2):
+                        if self.boardArray[startX-1][startY+1] != 0 and self.boardArray[startX-2][startY+2] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX+2, startY-2):
+                        if self.boardArray[startX+1][startY-1] != 0 and self.boardArray[startX+2][startY-2] != 0:
+                            del possibleMoves[move]
+
+                if (move[0] == startX + 4 or move[0] == startX - 4) and (move[1] == startY + 4 or move[1] == startY - 4):
+                    if self.isValidIndex(startX+3, startY+3):
+                        if self.boardArray[startX+1][startY+1] != 0 and self.boardArray[startX+2][startY+2] != 0 and self.boardArray[startX+3][startY+3] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-3, startY-3):
+                        if self.boardArray[startX-1][startY-1] != 0 and self.boardArray[startX-2][startY-2] != 0 and self.boardArray[startX-3][startY-3] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-3, startY+3):
+                        if self.boardArray[startX-1][startY+1] != 0 and self.boardArray[startX-2][startY+2] != 0 and self.boardArray[startX-3][startY+3] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX+3, startY-3):
+                        if self.boardArray[startX+1][startY-1] != 0 and self.boardArray[startX+2][startY-2] != 0 and self.boardArray[startX+3][startY-3] != 0:
+                            del possibleMoves[move]
+
+                if (move[0] == startX + 5 or move[0] == startX - 5) and (move[1] == startY + 5 or move[1] == startY - 5):
+                    if self.isValidIndex(startX+4, startY+4):
+                        if self.boardArray[startX+1][startY+1] != 0 and self.boardArray[startX+2][startY+2] != 0 and self.boardArray[startX+3][startY+3] != 0 and self.boardArray[startX+4][startY+4] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-4, startY-4):
+                        if self.boardArray[startX-1][startY-1] != 0 and self.boardArray[startX-2][startY-2] != 0 and self.boardArray[startX-3][startY-3] != 0 and self.boardArray[startX-4][startY-4] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-4, startY+4):
+                        if self.boardArray[startX-1][startY+1] != 0 and self.boardArray[startX-2][startY+2] != 0 and self.boardArray[startX-3][startY+3] != 0 and self.boardArray[startX-4][startY+4] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX+4, startY-4):
+                        if self.boardArray[startX+1][startY-1] != 0 and self.boardArray[startX+2][startY-2] != 0 and self.boardArray[startX+3][startY-3] != 0 and self.boardArray[startX+4][startY-4] != 0:
+                            del possibleMoves[move]
+
+                if (move[0] == startX + 6 or move[0] == startX - 6) and (move[1] == startY + 6 or move[1] == startY - 6):
+                    if self.isValidIndex(startX+5, startY+5):
+                        if self.boardArray[startX+1][startY+1] != 0 and self.boardArray[startX+2][startY+2] != 0 and self.boardArray[startX+3][startY+3] != 0 and self.boardArray[startX+4][startY+4] != 0 and self.boardArray[startX+5][startY+5] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-5, startY-5):
+                        if self.boardArray[startX-1][startY-1] != 0 and self.boardArray[startX-2][startY-2] != 0 and self.boardArray[startX-3][startY-3] != 0 and self.boardArray[startX-4][startY-4] != 0 and self.boardArray[startX-5][startY-5] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-5, startY+5):
+                        if self.boardArray[startX-1][startY+1] != 0 and self.boardArray[startX-2][startY+2] != 0 and self.boardArray[startX-3][startY+3] != 0 and self.boardArray[startX-4][startY+4] != 0 and self.boardArray[startX-5][startY+5] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX+5, startY-5):
+                        if self.boardArray[startX+1][startY-1] != 0 and self.boardArray[startX+2][startY-2] != 0 and self.boardArray[startX+3][startY-3] != 0 and self.boardArray[startX+4][startY-4] != 0 and self.boardArray[startX+5][startY-5] != 0:
+                            del possibleMoves[move]
+
+                if (move[0] == startX + 7 or move[0] == startX - 7) and (move[1] == startY + 7 or move[1] == startY - 7):
+                    if self.isValidIndex(startX+6, startY+6):
+                        if self.boardArray[startX+1][startY+1] != 0 and self.boardArray[startX+2][startY+2] != 0 and self.boardArray[startX+3][startY+3] != 0 and self.boardArray[startX+4][startY+4] != 0 and self.boardArray[startX+5][startY+5] != 0 and self.boardArray[startX+6][startY+6] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-6, startY-6):
+                        if self.boardArray[startX-1][startY-1] != 0 and self.boardArray[startX-2][startY-2] != 0 and self.boardArray[startX-3][startY-3] != 0 and self.boardArray[startX-4][startY-4] != 0 and self.boardArray[startX-5][startY-5] != 0 and self.boardArray[startX-6][startY-6] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX-6, startY+6):
+                        if self.boardArray[startX-1][startY+1] != 0 and self.boardArray[startX-2][startY+2] != 0 and self.boardArray[startX-3][startY+3] != 0 and self.boardArray[startX-4][startY+4] != 0 and self.boardArray[startX-5][startY+5] != 0 and self.boardArray[startX-6][startY+6] != 0:
+                            del possibleMoves[move]
+                    if self.isValidIndex(startX+6, startY-6):
+                        if self.boardArray[startX+1][startY-1] != 0 and self.boardArray[startX+2][startY-2] != 0 and self.boardArray[startX+3][startY-3] != 0 and self.boardArray[startX+4][startY-4] != 0 and self.boardArray[startX+5][startY-5] != 0 and self.boardArray[startX+6][startY-6] != 0:
+                            del possibleMoves[move]
+
         return possibleMoves
+
+    @staticmethod
+    def isValidIndex(x, y):
+        if x < 0 or x > 7:
+            return False
+        if y < 0 or y > 7:
+            return False
+        return True
 
     def findPossibleMovesOnDiagonal(self, start, stop, step, color, direction, traverseLeft, skipped=None):
         if skipped is None:

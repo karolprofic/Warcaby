@@ -3,7 +3,6 @@ from checkers.Controller import *
 from commons.constants import *
 from checkers.AI import *
 
-
 class PlayerVersusAI(Game):
     def __init__(self, music):
         super().__init__(music)
@@ -20,10 +19,14 @@ class PlayerVersusAI(Game):
             self.clock.tick(60)
 
             # AI move
-            if self.gameController.whoseTurn == PLAYER_WHITE:
-                moveValue, newBoard = AI(self.gameController.getBoard(), self.difficulty, PLAYER_WHITE).valueAndBoard
+            if self.gameController.whoseTurn == PLAYER_BLACK:
+                self.gameController.board.recursionFix = False
+                moveValue, newBoard = AI(self.gameController.getBoard(), self.difficulty, PLAYER_BLACK).valueAndBoard
                 self.gameController.setBoard(newBoard)
                 self.gameController.changePlayer()
+
+            if self.gameController.whoseTurn == PLAYER_WHITE:
+                self.gameController.board.recursionFix = True
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

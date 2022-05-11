@@ -7,7 +7,7 @@ class Controller:
         self.gameWindow = gameWindow
         self.selectedPiece = None
         self.board = Board()
-        self.whoseTurn = PLAYER_BLACK
+        self.whoseTurn = PLAYER_WHITE
         self.possibleMoves = {}
 
     def update(self):
@@ -16,6 +16,9 @@ class Controller:
         pygame.display.update()
 
     def reset(self):
+        self.whoseTurn = PLAYER_WHITE
+        self.selectedPiece = None
+        self.possibleMoves = {}
         self.board.reset()
 
     def returnWinnerIfExists(self):
