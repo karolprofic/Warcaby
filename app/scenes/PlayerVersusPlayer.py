@@ -10,26 +10,33 @@ class PlayerVersusPlayer(Game):
         self.start()
 
     def start(self):
-        pygame.init()
 
-        while self.isRunning:
-            self.gameWindow.fill(DEFAULT_BACKGROUND)
-            self.clock.tick(60)
+        try:
+            pygame.init()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.isRunning = False
+            while self.isRunning:
+                self.gameWindow.fill(DEFAULT_BACKGROUND)
+                self.clock.tick(60)
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    row, col = self.mouseClickEvent(pygame.mouse.get_pos(), self.gameController)
-                    if row != -1 and col != -1:
-                        self.gameController.selectPiece(row, col)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.isRunning = False
 
-            self.drawMenu(self.gameController.board.numberOfRemainingBlack,
-                          self.gameController.board.numberOfRemainingWhite,
-                          self.gameController.board.numberOfBlackKing,
-                          self.gameController.board.numberOfWhiteKing,
-                          self.gameController.whoseTurn)
-            self.gameController.update()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        row, col = self.mouseClickEvent(pygame.mouse.get_pos(), self.gameController)
+                        if row != -1 and col != -1:
+                            self.gameController.selectPiece(row, col)
 
-        pygame.quit()
+                self.drawMenu(self.gameController.board.numberOfRemainingBlack,
+                              self.gameController.board.numberOfRemainingWhite,
+                              self.gameController.board.numberOfBlackKing,
+                              self.gameController.board.numberOfWhiteKing,
+                              self.gameController.whoseTurn)
+                self.gameController.update()
+
+            pygame.quit()
+
+        except:
+            print("3")
+            return
+

@@ -38,3 +38,6 @@ TEXT_PvAI = "Graj przeciwko AI"
 TEXT_PvP = "Gra swobodna"
 TEXT_EASY = "Poziom trudności: Łatwy"
 TEXT_HARD = "Poziom trudności: Trudny"
+
+# Errors
+ERROR_DEFAULT = "An exception occurred"

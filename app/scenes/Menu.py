@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 from pygame import mixer
 from layout.Button import *
@@ -49,10 +51,12 @@ class Menu:
             if buttonExit.drawButton():
                 self.isRunning = False
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.isRunning = False
-
-            pygame.display.update()
+            try:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.isRunning = False
+                pygame.display.update()
+            except:
+                sys.exit()
 
         pygame.quit()
