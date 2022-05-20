@@ -37,6 +37,5 @@ class PlayerVersusPlayer(Game):
             pygame.quit()
 
         except:
-            print("3")
             return
 
