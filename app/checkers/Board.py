@@ -98,77 +98,51 @@ class Board:
         row = piece.row
 
         if piece.color == PLAYER_BLACK or piece.isKing:
-            possibleMoves.update(self.findMovesOnLeftDiagonal(row - 1, max(row - 3, -1), -1, piece.color, left))
-            possibleMoves.update(self.findMovesOnRightDiagonal(row - 1, max(row - 3, -1), -1, piece.color, right))
+            possibleMoves.update(self.findMovesOnDiagonal(row - 1, max(row - 3, -1), -1, piece.color, left, "LEFT"))
+            possibleMoves.update(self.findMovesOnDiagonal(row - 1, max(row - 3, -1), -1, piece.color, right, "RIGHT"))
         if piece.color == PLAYER_WHITE or piece.isKing:
-            possibleMoves.update(self.findMovesOnLeftDiagonal(row + 1, min(row + 3, 8), 1, piece.color, left))
-            possibleMoves.update(self.findMovesOnRightDiagonal(row + 1, min(row + 3, 8), 1, piece.color, right))
+            possibleMoves.update(self.findMovesOnDiagonal(row + 1, min(row + 3, 8), 1, piece.color, left, "LEFT"))
+            possibleMoves.update(self.findMovesOnDiagonal(row + 1, min(row + 3, 8), 1, piece.color, right, "RIGHT"))
 
         return possibleMoves
 
-    def findMovesOnLeftDiagonal(self, start, stop, step, color, left, skipped = []):
+    def findMovesOnDiagonal(self, start, stop, step, color, leftOrRight, direction, skipped = []):
         moves = {}
         last = []
         for r in range(start, stop, step):
-            if left < 0:
-                break
+            if direction == "LEFT":
+                if leftOrRight < 0:
+                    break
+            if direction == "RIGHT":
+                if leftOrRight >= 8:
+                    break
 
-            current = self.boardArray[r][left]
+            current = self.boardArray[r][leftOrRight]
             if current == 0:
                 if skipped and not last:
                     break
                 elif skipped:
-                    moves[(r, left)] = last + skipped
+                    moves[(r, leftOrRight)] = last + skipped
                 else:
-                    moves[(r, left)] = last
+                    moves[(r, leftOrRight)] = last
 
                 if last:
                     if step == -1:
                         row = max(r - 3, 0)
                     else:
                         row = min(r + 3, 8)
-                    moves.update(self.findMovesOnLeftDiagonal(r + step, row, step, color, left - 1, skipped = skipped + last))
-                    moves.update(self.findMovesOnRightDiagonal(r + step, row, step, color, left + 1, skipped = skipped + last))
+                    moves.update(self.findMovesOnDiagonal(r + step, row, step, color, leftOrRight - 1, "LEFT", skipped = skipped + last))
+                    moves.update(self.findMovesOnDiagonal(r + step, row, step, color, leftOrRight + 1, "RIGHT", skipped = skipped + last))
                 break
             elif current.color == color:
                 break
             else:
                 last = [current]
 
-            left -= 1
-
-        return moves
-
-    def findMovesOnRightDiagonal(self, start, stop, step, color, right, skipped = []):
-        moves = {}
-        last = []
-        for r in range(start, stop, step):
-            if right >= 8:
-                break
-
-            current = self.boardArray[r][right]
-            if current == 0:
-                if skipped and not last:
-                    break
-                elif skipped:
-                    moves[(r, right)] = last + skipped
-                else:
-                    moves[(r, right)] = last
-
-                if last:
-                    if step == -1:
-                        row = max(r - 3, 0)
-                    else:
-                        row = min(r + 3, 8)
-                    moves.update(self.findMovesOnLeftDiagonal(r + step, row, step, color, right - 1, skipped = skipped + last))
-                    moves.update(self.findMovesOnRightDiagonal(r + step, row, step, color, right + 1, skipped = skipped + last))
-                break
-            elif current.color == color:
-                break
-            else:
-                last = [current]
-
-            right += 1
+            if direction == "LEFT":
+                leftOrRight -= 1
+            if direction == "RIGHT":
+                leftOrRight += 1
 
         return moves
 
