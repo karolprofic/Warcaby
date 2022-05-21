@@ -114,7 +114,7 @@ class Board:
                 if leftOrRight < 0:
                     break
             if direction == "RIGHT":
-                if leftOrRight >= 8:
+                if leftOrRight > 7:
                     break
 
             current = self.boardArray[r][leftOrRight]

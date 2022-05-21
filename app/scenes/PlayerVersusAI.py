@@ -19,8 +19,8 @@ class PlayerVersusAI(Game):
             self.clock.tick(60)
 
             # AI move
-            if self.gameController.whoseTurn == PLAYER_WHITE:
-                moveValue, newBoard = AI(self.gameController.getBoard(), self.difficulty, PLAYER_WHITE).valueAndBoard
+            if self.gameController.whoseTurn == PLAYER_BLACK:
+                moveValue, newBoard = AI(self.gameController.getBoard(), self.difficulty, PLAYER_BLACK).valueAndBoard
                 self.gameController.setBoard(newBoard)
                 self.gameController.changePlayer()
 
